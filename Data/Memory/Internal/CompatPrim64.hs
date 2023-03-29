@@ -150,8 +150,7 @@ w64# :: Word# -> Word# -> Word# -> Word64#
 w64# w _ _ = w
 
 #elif WORD_SIZE_IN_BITS == 32
-import GHC.IntWord64
-import GHC.Prim (Word#)
+import GHC.Prim hiding (timesWord64#)
 
 timesWord64# :: Word64# -> Word64# -> Word64#
 timesWord64# a b =

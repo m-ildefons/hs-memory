@@ -79,6 +79,12 @@ Library
   -- ARCH_ENDIAN_UNKNOWN
   if (arch(i386) || arch(x86_64))
     CPP-options:     -DARCH_IS_LITTLE_ENDIAN
+
+  if !(arch(x86_64))
+    CPP-options:    -D_WASI_EMULATED_MMAN
+    ghc-options:    -lwasi-emulated-mman
+
+
   if os(windows)
     Other-modules:   Data.Memory.MemMap.Windows
   else
