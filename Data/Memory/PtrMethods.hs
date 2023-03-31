@@ -35,7 +35,7 @@ memCreateTemporary :: Int -> (Ptr Word8 -> IO a) -> IO a
 memCreateTemporary size f = allocaBytesAligned size 8 f
 
 -- | xor bytes from source1 and source2 to destination
--- 
+--
 -- d = s1 xor s2
 --
 -- s1, nor s2 are modified unless d point to s1 or s2
@@ -63,12 +63,16 @@ memXorWith destination !v source bytes
 
 -- | Copy a set number of bytes from @src to @dst
 memCopy :: Ptr Word8 -> Ptr Word8 -> Int -> IO ()
-memCopy dst src n = c_memcpy dst src (fromIntegral n)
+memCopy dst src n = do
+  _ <- c_memcpy dst src (fromIntegral n)
+  return ()
 {-# INLINE memCopy #-}
 
 -- | Set @n number of bytes to the same value @v
 memSet :: Ptr Word8 -> Word8 -> Int -> IO ()
-memSet start v n = c_memset start v (fromIntegral n) >>= \_ -> return ()
+memSet start v n = do
+  _ <- c_memset start v (fromIntegral n) >> return start
+  return ()
 {-# INLINE memSet #-}
 
 -- | Reverse a set number of bytes from @src@ to @dst@.  Memory
@@ -114,7 +118,7 @@ memConstEqual p1 p2 n = loop 0 0
             loop (i+1) (acc .|. e)
 
 foreign import ccall unsafe "memset"
-    c_memset :: Ptr Word8 -> Word8 -> CSize -> IO ()
+    c_memset :: Ptr Word8 -> Word8 -> CSize -> IO (Ptr Word8)
 
 foreign import ccall unsafe "memcpy"
-    c_memcpy :: Ptr Word8 -> Ptr Word8 -> CSize -> IO ()
+    c_memcpy :: Ptr Word8 -> Ptr Word8 -> CSize -> IO (Ptr Word8)

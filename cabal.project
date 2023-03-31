@@ -4,5 +4,5 @@ packages:
 source-repository-package
     type: git
     location: https://github.com/m-ildefons/foundation
-    tag: 873f2c35bb7c77fb432a7a79e1acb5230c66b6c2
+    tag: 4316929e6cbca027e25349710a71548f8f26220a
     subdir: basement
